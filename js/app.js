@@ -80,7 +80,68 @@ o2Req.send();
 o3Req = new XMLHttpRequest();
 
 o3Req.addEventListener("load", function(res) {
-  console.log("response films: ", JSON.parse(res.currentTarget.response));
+  console.log(
+    "response films: ",
+    JSON.parse(res.currentTarget.response).results
+  );
+
+  //Create list elements and add them to film list
+  let filmListElem = document.getElementById("filmList");
+  for (
+    let i = 0;
+    i < JSON.parse(res.currentTarget.response).results.length;
+    i++
+  ) {
+    //Create list element called list
+    let film = document.createElement("li");
+    film.className = "film";
+
+    //Create film title element for each film with heading size 2
+    let filmTitle = document.createElement("h2");
+    filmTitle.className = "filmTitle";
+    filmTitle.innerHTML = JSON.parse(res.currentTarget.response).results[
+      i
+    ].title;
+    film.appendChild(filmTitle);
+
+    //Create film's planets list
+    let planets = document.createElement("h3");
+    planets.innerHTML = "Planets";
+    film.appendChild(planets);
+
+    //Create unordered list of planets that appeared in each film
+    let filmPlanets = document.createElement("ul");
+    filmPlanets.className = "filmPlanets";
+    planets.appendChild(filmPlanets);
+
+    //Create list elements for each planet
+    let planet = document.createElement("li");
+    planet.className = "planet";
+    filmPlanets.appendChild(planet);
+
+    //Create a planet name title element for each planet with heading4
+    let planetName = document.createElement("h4");
+    planetName.className = "planetName";
+
+    o3Req = new XMLHttpRequest();
+
+    o3Req.addEventListener("load", function(res) {
+      console.log("response planet: ", JSON.parse(res.currentTarget.response));
+    });
+    for (
+      let j = 0;
+      j < JSON.parse(res.currentTarget.response).results[i].planets;
+      j++
+    ) {
+      o3Req.open(
+        "GET",
+        JSON.parse(res.currentTarget.response).results[i].planets[j]
+      );
+      o3Req.send();
+    }
+
+    filmListElem.appendChild(film);
+  }
 });
 
 o3Req.open("GET", "https://swapi.co/api/films/");
