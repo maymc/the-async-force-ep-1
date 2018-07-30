@@ -54,6 +54,7 @@ o2Req.addEventListener("load", function(res) {
     res.currentTarget.response
   ).name;
 
+  //Species is on a different link so another request needs to be made.
   //person 14 species
   o2Req = new XMLHttpRequest();
 
@@ -74,3 +75,13 @@ o2Req.addEventListener("load", function(res) {
 
 o2Req.open("GET", "https://swapi.co/api/people/14/");
 o2Req.send();
+
+//Problem 3:
+o3Req = new XMLHttpRequest();
+
+o3Req.addEventListener("load", function(res) {
+  console.log("response films: ", JSON.parse(res.currentTarget.response));
+});
+
+o3Req.open("GET", "https://swapi.co/api/films/");
+o3Req.send();
