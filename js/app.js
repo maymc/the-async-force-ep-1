@@ -37,3 +37,40 @@ oReq.addEventListener("load", function(res) {
 
 oReq.open("GET", "https://swapi.co/api/people/4/");
 oReq.send();
+
+//Problem 2:
+let o2Req = new XMLHttpRequest();
+
+o2Req.addEventListener("load", function(res) {
+  //Check response
+  console.log("response: ", JSON.parse(res.currentTarget.response));
+
+  //person 14 name
+  console.log(
+    "response person14Name: ",
+    JSON.parse(res.currentTarget.response).name
+  );
+  document.getElementById("person14Name").innerHTML = JSON.parse(
+    res.currentTarget.response
+  ).name;
+
+  //person 14 species
+  o2Req = new XMLHttpRequest();
+
+  o2Req.addEventListener("load", function(res) {
+    console.log(
+      "response person14Species: ",
+      JSON.parse(res.currentTarget.response).name
+    );
+
+    document.getElementById("person14Species").innerHTML = JSON.parse(
+      res.currentTarget.response
+    ).name;
+  });
+
+  o2Req.open("GET", "https://swapi.co/api/species/1/");
+  o2Req.send();
+});
+
+o2Req.open("GET", "https://swapi.co/api/people/14/");
+o2Req.send();
