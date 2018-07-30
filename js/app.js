@@ -8,31 +8,21 @@ oReq.addEventListener("load", function (res) {
   console.log("response: ", JSON.parse(res.currentTarget.response));
 
   //person 4 name
-  console.log(
-    "response person4Name: ",
-    JSON.parse(res.currentTarget.response).name
-  );
+  console.log("response person4Name: ", JSON.parse(res.currentTarget.response).name);
 
-  document.getElementById("person4Name").innerHTML = JSON.parse(
-    res.currentTarget.response
-  ).name;
+  document.getElementById("person4Name").innerHTML = JSON.parse(res.currentTarget.response).name;
 
   //HomeWorld is on a different link so it needs to be on a different request.
   //person 4 home world
-  oReq = new XMLHttpRequest();
+  o1Req = new XMLHttpRequest();
 
-  oReq.addEventListener("load", function (res) {
-    console.log(
-      "response person4HomeWorld: ",
-      JSON.parse(res.currentTarget.response).name
-    );
-    document.getElementById("person4HomeWorld").innerHTML = JSON.parse(
-      res.currentTarget.response
-    ).name;
+  o1Req.addEventListener("load", function (res) {
+    console.log("response person4HomeWorld: ", JSON.parse(res.currentTarget.response).name);
+    document.getElementById("person4HomeWorld").innerHTML = JSON.parse(res.currentTarget.response).name;
   });
 
-  oReq.open("GET", "https://swapi.co/api/planets/1/");
-  oReq.send();
+  o1Req.open("GET", "https://swapi.co/api/planets/1/");
+  o1Req.send();
 });
 
 oReq.open("GET", "https://swapi.co/api/people/4/");
@@ -106,25 +96,32 @@ o3Req.addEventListener("load", function (res) {
     filmPlanets.className = "filmPlanets";
     planets.appendChild(filmPlanets);
 
-    //Create list elements for each planet
-    let planet = document.createElement("li");
-    planet.className = "planet";
-    filmPlanets.appendChild(planet);
+    for (let j = 0; j < JSON.parse(res.currentTarget.response).results[i].planets.length; j++) {
+      var filmName = JSON.parse(res.currentTarget.response).results[i].title;
+      var planetLink = JSON.parse(res.currentTarget.response).results[i].planets[j];
+      console.log("film: " + filmName + ", planet: " + planetLink);
 
-    o4Req = new XMLHttpRequest();
+      o4Req = new XMLHttpRequest();
+      //Create list elements for each planet
+      let planet = document.createElement("li");
+      planet.className = "planet";
+      filmPlanets.appendChild(planet);
 
-    o4Req.addEventListener("load", function (res) {
-      console.log("response planet: ", JSON.parse(res.currentTarget.response));
 
-      //Create a planet name title element for each planet with heading4
-      let planetName = document.createElement("h4");
-      planetName.className = "planetName";
-      planetName.innerHTML = JSON.parse(res.currentTarget.response).name;
-      planet.appendChild(planetName);
-    });
+      o4Req.addEventListener("load", function (res) {
+        console.log("TEST - film: " + filmName + ", planet: " + planetLink);
+        console.log("response planet: ", JSON.parse(res.currentTarget.response).name + ", planet: " + planetLink);
 
-    o4Req.open("GET", "https://swapi.co/api/planets/2/");
-    o4Req.send();
+        //Create a planet name title element for each planet with heading4
+        let planetName = document.createElement("h4");
+        planetName.className = "planetName";
+        planetName.innerHTML = JSON.parse(res.currentTarget.response).name;
+        planet.appendChild(planetName);
+      });
+
+      o4Req.open("GET", planetLink);
+      o4Req.send();
+    }
 
     // for (let j = 0; j < JSON.parse(res.currentTarget.response).results[i].planets.length; j++) {
     //   var filmName = JSON.parse(res.currentTarget.response).results[i].title;
